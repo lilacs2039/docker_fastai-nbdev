@@ -1,36 +1,37 @@
 # referd https://github.com/fastai/nbdev_template/blob/master/docker-compose.yml
 version: "1"
 services:
-  fastai: &fastai
+  jupyter:
     restart: unless-stopped
-    working_dir: /data
-    image: lilscs2039/fastai-nbdev
+    image: lilacs2039/fastai-nbdev
+    # run watchmedo&nbdev_build, run jupyter
+    command: >
+      bash -c "nbdev_build_lib && nbdev_build_docs
+      && jupyter lab --allow-root --no-browser --ip=0.0.0.0 --port=8888 --NotebookApp.token='' --NotebookApp.password=''"
     logging:
       driver: json-file
       options:
         max-size: 50m
     stdin_open: true
     tty: true
+    working_dir: /workspace
     volumes:
-      - .:/data/
-
-  notebook:
-    <<: *fastai
-    command: bash -c "pip install -e . && jupyter notebook --allow-root --no-browser --ip=0.0.0.0 --port=8080 --NotebookApp.token='' --NotebookApp.password=''"
+      - .:/workspace/
     ports:
-      - "8080:8080"
-
-  watcher:
-    <<: *fastai
-    command: watchmedo shell-command --command nbdev_build_docs --pattern *.ipynb --recursive --drop
-    network_mode: host # for GitHub Codespaces https://github.com/features/codespaces/
+      - "8888:8888"
 
   jekyll:
-    <<: *fastai
+    image: fastai/jekyll
+    depends_on:
+      - jupyter
+    command: >
+     bash -c "cd docs
+     && bundle i
+     && chmod -R u+rwx . 
+     && bundle exec jekyll serve --host 0.0.0.0 --trace"
+    working_dir: /workspace
+    volumes:
+      - .:/workspace/
     ports:
      - "4000:4000"
-    command: >
-     bash -c "pip install .
-     && nbdev_build_docs && cd docs
-     && bundle i
-     && chmod -R u+rwx . && bundle exec jekyll serve --host 0.0.0.0"
+

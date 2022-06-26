@@ -1,13 +1,13 @@
 # docker_fastai-nbdev
 
-fastai（GPUあり）とnbdevが簡単に利用できるイメージ。
+fastai（GPUあり）とnbdevが簡単に利用できるイメージとdocker composeファイル。
 
 
 
 # 特徴
 
-- fastaiは`/workspace/fastai`に編集インストール
-- nbdevとJekyllもインストール済み
+- fastai・nbdevインストール済み
+- Jekyllは`fastai/jekyll`イメージを使う
 - データセット（テストデータ）は含まれない
     - 参考元のイメージはCourseの学生を想定しているので、データセットをイメージに含めてると思われる。
     - 学習ではなく実問題に使えるイメージを作りたいので、データサイズ大きくなりがちなデータセットは入れない。
@@ -17,16 +17,14 @@ fastai（GPUあり）とnbdevが簡単に利用できるイメージ。
 
 ## 詳細
 
-| **項目**   | **値**                                                  |
-| ---------- | ------------------------------------------------------- |
-| 元イメージ | pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime          |
-| OS         | Ubuntu18.04 LTS                                         |
-| Python     | 3.8.12                                                  |
-| Ruby       | 2.5.1p57 (2018-03-29 revision 63029) [x86_64-linux-gnu] |
-| Jekyll     | 2.7.6                                                   |
+| **項目**   | **値**                                         |
+| ---------- | ---------------------------------------------- |
+| 元イメージ | pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime |
+| OS         | Ubuntu18.04 LTS                                |
+| Python     | 3.8.12                                         |
 
 
-
+　
 # 使い方
 
 ## 想定環境
@@ -41,16 +39,32 @@ fastai（GPUあり）とnbdevが簡単に利用できるイメージ。
 
 ## 実行
 
-本イメージで作業したいプロジェクトのルートフォルダで、以下のコマンドを実行する。
+1. 本イメージで作業したいnbdevプロジェクト※１のルートフォルダで、以下のコマンドを実行する。
 
 ```
-# 本リポジトリの`docker-compose.yml`をコピーする
-curl
+# 本リポジトリの`docker-compose.yml`を取得
+wget https://raw.githubusercontent.com/lilacs2039/docker_fastai-nbdev/main/docker-compose.yml
 # 環境立ち上げ
 docker compose up
 ```
 
-※Docker v1.xを使用している場合は、 `docker-compose up` かも。
+2. ローカルサーバへアクセス
+
+- Jupyter Lab : http://localhost:8888
+- Jekyll : http://localhost:4000/(lib_name)
+
+
+
+※１：nbdevプロジェクトとは、[fastai/nbdev_template: Template for nbdev projects](https://github.com/fastai/nbdev_template)から作成したプロジェクトのこと。
+
+
+
+注意点
+
+- `docker compose up`は、nbdevプロジェクト設定（`settings.ini`）ができていないとエラーになる。
+
+- Docker v1.xを使用している場合は、 `docker-compose up` かも。
+
 
 
 
@@ -59,7 +73,16 @@ docker compose up
 ## DockerFileのビルド
 
 ```
-docker build ./ -t fastai-nbdev
+docker build ./ -t (DockerHub username)/fastai-nbdev
+```
+
+
+
+## DockerHubへのプッシュ
+
+```
+docker login
+docker push (DockerHub username)/fastai-nbdev
 ```
 
 

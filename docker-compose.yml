@@ -1,9 +1,10 @@
-version: "3"
+# referd https://github.com/fastai/nbdev_template/blob/master/docker-compose.yml
+version: "1"
 services:
   fastai: &fastai
     restart: unless-stopped
     working_dir: /data
-    image: fastai/codespaces:2021-02-11
+    image: lilscs2039/fastai-nbdev
     logging:
       driver: json-file
       options:

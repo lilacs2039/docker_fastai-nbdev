@@ -70,10 +70,12 @@ docker compose up
 
 # 開発
 
+lilacs2039, yyyymmddは適宜書き換えのこと。
+
 ## DockerFileのビルド
 
 ```
-docker build ./ -t (DockerHub username)/fastai-nbdev
+docker build ./ -t lilacs2039/fastai-nbdev
 ```
 
 
@@ -82,7 +84,8 @@ docker build ./ -t (DockerHub username)/fastai-nbdev
 
 ```
 docker login
-docker push (DockerHub username)/fastai-nbdev
+docker tag lilacs2039/fastai-nbdev lilacs2039/fastai-nbdev:yyyymmdd
+docker push lilacs2039/fastai-nbdev
 ```
 
 

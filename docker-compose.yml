@@ -8,6 +8,8 @@ services:
     # run nbdev_build, jupyter
     command: >
       bash -c "nbdev_build_lib && nbdev_build_docs
+      && pip install -e .
+      && export SHELL=/bin/bash && source ~/.bashrc
       && jupyter lab --allow-root --no-browser --ip=0.0.0.0 --port=8888 --NotebookApp.token='' --NotebookApp.password=''"
     logging:
       driver: json-file

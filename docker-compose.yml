@@ -4,6 +4,7 @@ services:
   jupyter:
     restart: unless-stopped
     image: lilacs2039/fastai-nbdev
+    container_name: nbdev-jupyter
     # run nbdev_build, jupyter
     command: >
       bash -c "nbdev_build_lib && nbdev_build_docs
@@ -22,6 +23,7 @@ services:
 
   jekyll:
     image: fastai/jekyll
+    container_name: nbdev-jekyll
     depends_on:
       - jupyter
     command: >

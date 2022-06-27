@@ -41,10 +41,11 @@ fastai（GPUあり）とnbdevが簡単に利用できるイメージとdocker co
 
 1. 本イメージで作業したいnbdevプロジェクト※１のルートフォルダで、以下のコマンドを実行する。
 
-```
+```bash
 # 本リポジトリの`docker-compose.yml`を取得
 wget https://raw.githubusercontent.com/lilacs2039/docker_fastai-nbdev/main/docker-compose.yml
 # 環境立ち上げ
+sudo service docker start
 docker compose up
 ```
 

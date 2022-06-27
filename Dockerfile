@@ -1,3 +1,5 @@
+# Image : fastai-nbdev
+
 FROM pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
 # `/workspace` is the default working directory for the pytorch image.
 ARG workdir=/workspace

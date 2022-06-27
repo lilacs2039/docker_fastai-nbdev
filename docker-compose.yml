@@ -4,7 +4,7 @@ services:
   jupyter:
     restart: unless-stopped
     image: lilacs2039/fastai-nbdev
-    # run watchmedo&nbdev_build, run jupyter
+    # run nbdev_build, jupyter
     command: >
       bash -c "nbdev_build_lib && nbdev_build_docs
       && jupyter lab --allow-root --no-browser --ip=0.0.0.0 --port=8888 --NotebookApp.token='' --NotebookApp.password=''"

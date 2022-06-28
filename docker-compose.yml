@@ -1,5 +1,5 @@
 # referd https://github.com/fastai/nbdev_template/blob/master/docker-compose.yml
-version: "1"
+version: "3"
 services:
   jupyter:
     restart: unless-stopped
@@ -11,6 +11,13 @@ services:
       && pip install -e .
       && export SHELL=/bin/bash && source ~/.bashrc
       && jupyter lab --allow-root --no-browser --ip=0.0.0.0 --port=8888 --NotebookApp.token='' --NotebookApp.password=''"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     logging:
       driver: json-file
       options:

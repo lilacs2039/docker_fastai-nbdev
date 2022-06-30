@@ -6,8 +6,12 @@ ARG workdir=/workspace
 WORKDIR ${workdir}
 
 # setup
-RUN apt-get update && apt-get install -y software-properties-common rsync
-RUN add-apt-repository -y ppa:git-core/ppa && apt-get update && apt-get install -y git libglib2.0-dev && apt-get update
+    # export SHELL=/bin/bash : to jupyter terminal use not sh but bash
+    # libgl1-mesa-dev : for opencv
+RUN export SHELL=/bin/bash \
+    && apt-get update && apt-get install -y software-properties-common rsync libgl1-mesa-dev
+RUN add-apt-repository -y ppa:git-core/ppa && apt-get update \
+    && apt-get install -y git libglib2.0-dev && apt-get update
 RUN apt-get -y install nano graphviz libwebp-dev \
    ruby ruby-dev \
    wget lsb-release
@@ -45,6 +49,11 @@ RUN pip install -U albumentations \
     dtreeviz \
     treeinterpreter \
     watchdog[watchmedo] \
-    waterfallcharts
+    waterfallcharts \
+    opencv-python \
+    japanize_matplotlib \
+    timm \
+    torchinfo \
+    attrdict
 RUN python -m ipykernel install
 

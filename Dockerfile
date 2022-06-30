@@ -6,10 +6,8 @@ ARG workdir=/workspace
 WORKDIR ${workdir}
 
 # setup
-    # export SHELL=/bin/bash : to jupyter terminal use not sh but bash
     # libgl1-mesa-dev : for opencv
-RUN export SHELL=/bin/bash \
-    && apt-get update && apt-get install -y software-properties-common rsync libgl1-mesa-dev
+RUN apt-get update && apt-get install -y software-properties-common rsync libgl1-mesa-dev
 RUN add-apt-repository -y ppa:git-core/ppa && apt-get update \
     && apt-get install -y git libglib2.0-dev && apt-get update
 RUN apt-get -y install nano graphviz libwebp-dev \

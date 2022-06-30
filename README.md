@@ -86,7 +86,7 @@ docker build ./ -t lilacs2039/fastai-nbdev
 ```
 docker login
 docker tag lilacs2039/fastai-nbdev lilacs2039/fastai-nbdev:yyyymmdd
-docker push lilacs2039/fastai-nbdev
+docker push lilacs2039/fastai-nbdev:yyyymmdd
 ```
 
 

@@ -2,18 +2,13 @@
 version: "3"
 services:
   jupyter:
-    container_name: jupyter
-
-    # イメージ：image(dockerhubからDL) or build（同一ディレクトリのDockerfileからビルド）　を選択
-    # image: lilacs2039/fastai-nbdev
-    build:
-      dockerfile: Dockerfile
-      context: .
-
-    # pip install -e . は初回失敗するので、失敗でも処理は継続
+    restart: unless-stopped
+    image: lilacs2039/fastai-nbdev
+    container_name: nbdev-jupyter
+    # run nbdev_build, jupyter
     command: >
-      bash -c "export SHELL=/bin/bash && source ~/.bashrc
-      && pip install -e . | echo ''
+      bash -c "pip install -e .
+      && export SHELL=/bin/bash && source ~/.bashrc
       && jupyter lab --allow-root --no-browser --ip=0.0.0.0 --port=8888 --NotebookApp.token='' --NotebookApp.password=''"
     deploy:
       resources:
@@ -26,7 +21,6 @@ services:
       driver: json-file
       options:
         max-size: 50m
-    restart: unless-stopped
     stdin_open: true
     shm_size: 2gb    # shared memory, DataLoaderに必要。
     tty: true
@@ -34,5 +28,21 @@ services:
     volumes:
       - .:/workspace/prj
     ports:
-      - "8888:8888"  # jupyter lab
+      - "8888:8888"
+
+  jekyll:
+    image: fastai/jekyll
+    container_name: nbdev-jekyll
+    depends_on:
+      - jupyter
+    command: >
+     bash -c "cd docs
+     && bundle i
+     && chmod -R u+rwx . 
+     && bundle exec jekyll serve --host 0.0.0.0 --trace"
+    working_dir: /workspace
+    volumes:
+      - .:/workspace/
+    ports:
+     - "4000:4000"
 
